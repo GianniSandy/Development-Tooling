@@ -35,25 +35,25 @@ WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, Pr
 
 ## Usage ##
 
-### Available Template Substitutions ###
+### Available Template substitutions ###
 
- * <project_name>: A unique name for this project. Used in the URL if it's a web project, so should only use URL safe characters
- * <project_path>: The path to the project in the developer's environment
- * <uniface_packages_path>: The path to the Uniface packages folder on the local machine
- * <uniface_path>:
- * <uniface_adm_path>:
- * <udbg_machine>:
- * <udbg_port>:
- * <urouter_machine>:
- * <urouter_port>:
- * <utomcat_machine>:
- * <utomcat_port>:
- * <userver_user>:
- * <userver_password>:
- * <uniface_browser>:
- * <uniface_xmleditor>:
+ * \<project_name\>: A unique name for this project. Used in the URL if it's a web project, so should only use URL safe characters
+ * \<project_path\>: The path to the project in the developer's environment
+ * \<uniface_packages_path\>: The path to the Uniface packages folder on the local machine
+ * \<uniface_path\>:
+ * \<uniface_adm_path\>:
+ * \<udbg_machine\>:
+ * \<udbg_port\>:
+ * \<urouter_machine\>:
+ * \<urouter_port\>:
+ * \<utomcat_machine\>:
+ * \<utomcat_port\>:
+ * \<userver_user\>:
+ * \<userver_password\>:
+ * \<uniface_browser\>:
+ * \<uniface_xmleditor\>:
 
-### Available Substitutions for filenames or other params in project setup file ###
+### Available substitutions for filenames or other params in project setup file ###
 
  * ${project_name}
  * ${project_path}
@@ -85,7 +85,6 @@ WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, Pr
     * asn: The assignment file to use, relative to the project's working directory
     * ini: The ini file to use, relative to the project's working directory. Can be blank if not required.
     * debug: If set to 1 then the debugger will be launched before the build process starts to allow troubleshooting
-
  * do-import: Automatically import source code
  * do-compile: Run a full compile after importing everything
  * import-defaults: Import the Uniface defaults (if false then Uniface defaults should be included as part of the project source)
@@ -112,7 +111,7 @@ Gianni Sandigliano 2017-03-09
  Modified source SETUP_MAIN_S and SETUP_STEP2_S to save project.setup.log.
  Modified source SETUP_STEP2_S to support (SQL) script execution on 3 paths: $IDF, $SYS, $DEF.
  Modified source SETUP_STEP2_S to support data import on 3 paths: $IDF, $SYS, $DEF.
-Gianni Sandigliano 2017-03-10 It works! Committed
+Gianni Sandigliano 2017-03-10 Everything works...Committed!
 
 
 ## Contributors ##
