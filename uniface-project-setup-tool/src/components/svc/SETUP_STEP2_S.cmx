@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2016-02-04T09:56:52.00</DAT>
-<DAT name="UCOMPSTAMP">2016-02-04T09:58:09.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-09T22:00:55.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-09T22:00:55.00</DAT>
 <DAT name="ULABEL">SETUP_STEP2_S</DAT>
 <DAT name="WVPOS">0</DAT>
 <DAT name="WHPOS">0</DAT>
@@ -202,7 +202,9 @@
 
 #Comment ----------------------------------------------
 </DAT>
-<DAT name="GENERAL" xml:space='preserve'>;------------------------------------------------------------------
+<DAT name="GENERAL" xml:space='preserve'>#INCLUDE SYSTEM_LIBRARY:SETUP_VARIABLES
+
+;------------------------------------------------------------------
 ; Import the Uniface defaults
 ;------------------------------------------------------------------
 entry lpImportUnifaceDefaults
@@ -359,6 +361,9 @@ end ;lpDoCompile
 
 ;---------------------------------------------------------------------
 ;Run table creation scripts
+; This is old version running ALL sql statements toward DEF
+; Substituted with lpRunTableScripts(Messages, Path)
+; See below...
 ;---------------------------------------------------------------------
 entry lpRunTableCreateScripts
 ;---------------------------------------------------------------------
@@ -410,6 +415,78 @@ endvariables
 end ;lpRunTableCreateScripts
 
 
+;---------------------------------------------------------------------
+entry lpRunTableScripts
+;---------------------------------------------------------------------
+; Execute a SQL script on path pPath if was copied to .\sql\
+;---------------------------------------------------------------------
+params
+	Struct pMessages : INOUT
+	String pPath     : IN
+endparams
+
+variables
+	String  vScriptDir
+	String  vScript
+	String  vSql
+	String  vStatements
+	String  vStatement
+	Numeric vCount
+	Numeric vNumberOfDataImports
+	Numeric vWarning
+endvariables
+
+	pMessages-&gt;"SCRIPT_EXEC_%%pPath%%%" = $newstruct
+	pMessages-&gt;"SCRIPT_EXEC_%%pPath%%%"-&gt;"DESC" = "Running Table Scripts on %%pPath%%% path"
+
+	putmess "Exec scripts, path %%pPath%%%"
+
+	vScriptDir = ".\sql\"
+	vWarning = 0
+
+	vCount               = 1
+	vNumberOfDataImports = $options$-&gt;"config-file"-&gt;"sql-templates-%%pPath%%%"-&gt;*-&gt;$collsize
+	while(vCount &lt;= vNumberOfDataImports)
+
+		vScript = $options$-&gt;"config-file"-&gt;"sql-templates-%%pPath%%%"-&gt;*{vCount}-&gt;"to"
+
+		if (vScript[1:$length(vScriptDir)] == vScriptDir &amp; $fileexists(vScript))
+
+			lfileload vScript, vSql
+
+			vStatements = lpSplitSql(vSql)
+			getitem vStatement, vStatements, 1
+			while(vStatement != "")	
+
+				sql vStatement, pPath
+				if ($status &lt; 0) vWarning = 1
+
+				delitem vStatements, 1
+				getitem vStatement, vStatements, 1
+
+			endwhile
+			commit
+
+		endif
+		vCount = vCount + 1
+
+	endwhile
+
+	if (vNumberOfDataImports == 0)
+		pMessages-&gt;"SCRIPT_EXEC_%%pPath%%%"-&gt;"STATUS" = "NOTHING TO DO"
+	else
+		if (vWarning == 0)
+			pMessages-&gt;"SCRIPT_EXEC_%%pPath%%%"-&gt;"STATUS" = "SUCCESS"
+		else
+			pMessages-&gt;"SCRIPT_EXEC_%%pPath%%%"-&gt;"STATUS" = "WARNING(S)"
+		endif
+	endif
+
+	return 0
+
+end ;lpRunTableCreateScripts
+
+
 ;-------------------------------------------------------------------------
 ; Loop over any data import declarations and import the files into $DEF
 ;-------------------------------------------------------------------------
@@ -423,12 +500,14 @@ variables
 	Numeric vCount
 	Numeric vNumberOfDataImports
 	String  vLocation
+	String  vPath
 endvariables
 
 	pMessages-&gt;"IMPORT_DATA" = $newstruct
 	pMessages-&gt;"IMPORT_DATA"-&gt;"DESC" = "Importing Data"
 
 	putmess "Import application data"
+
 	vCount               = 1
 	vNumberOfDataImports = $options$-&gt;"config-file"-&gt;"data-import-files"-&gt;*-&gt;$collsize
 	while(vCount &lt;= vNumberOfDataImports)
@@ -436,7 +515,10 @@ endvariables
 		vLocation = $options$-&gt;"config-file"-&gt;"data-import-files"-&gt;*{vCount}-&gt;"location"
 		;TODO: Throw an error if this isn't found
 
-		call lpImportData(vLocation)
+		vPath = $options$-&gt;"config-file"-&gt;"data-import-files"-&gt;*{vCount}-&gt;"path"
+		;TODO: Throw an error if this isn't found
+
+		call lpImportData(vLocation, vPath)
 		if($status &lt; 0)
 			pMessages-&gt;"IMPORT_DATA"-&gt;"STATUS" = "FAILED"
 			return 0
@@ -497,7 +579,11 @@ endvariables
 		vArgs = $options$-&gt;"config-file"-&gt;"shortcuts"-&gt;*{vCount}-&gt;"args"
 		;TODO: Throw an error if this isn't found
 
-		vArgs = $replace(vArgs, 1, "${debugport}", $options$-&gt;"uniface"-&gt;"UDBG_PORT", -1)
+		; vArgs = $replace(vArgs, 1, "${debugport}", $options$-&gt;"uniface"-&gt;"UDBG_PORT", -1)
+
+		vName = lpSubstituteVariables(vName)
+		vTarget = lpSubstituteVariables(vTarget)
+		vArgs = lpSubstituteVariables(vArgs)
 
 		;Create shortcut config line
 		filedump/append "%%vName%%%,%%vTarget%%%,%%vArgs%%%%%^", "shortcut_config.txt"
@@ -519,6 +605,9 @@ endvariables
 	endif
 
 	vExePath = $concat(vProjectSetupRoot, "3gl\UnifaceShortcutCreator.exe")
+
+   if ($scan(vExePath, " ") &gt; 0) vExePath = "%%"%%vExePath%%%%%""
+
 	activate "OS".commandOut("%%vExePath%%% --file shortcut_config.txt –v", vShortcutOutput)
 
 	;Clean up the shortcut config file
@@ -573,6 +662,7 @@ entry lpImportData
 ;---------------------------------------------------------
 params
 	String pLocation : IN
+	String pPath     : IN
 endparams
 
 variables
@@ -603,14 +693,15 @@ endvariables
 
 		vFullFilePath = $concat(vFolderPart, vFile)
 
-		vReturn = $ude("copy", "misc", vFullFilePath, "DEF:")
+		vReturn = $ude("copy", "misc", vFullFilePath, "%%pPath%%%:")
 		vCopyReturnContext = $procReturnContext
 
 	endfor
 
 	return 0
 
-end ;lpImportData</DAT>
+end ;lpImportData
+</DAT>
 <DAT name="FORMPIC" xml:space='preserve'>
  &uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=20&uSEP;HEI=1&uSEP;HOC=20&uSEP;VOC=1&uFRM;</DAT>
 <DAT name="SFUNC" xml:space='preserve'>;-------------------------------------------------------------------
@@ -649,10 +740,14 @@ endvariables
 	;------------------------------------------------------------------
 	;Run the various step 2 setup tasks
 	;------------------------------------------------------------------
+	call lpRunTableScripts(vMessages, "IDF")
 	call lpImportUnifaceDefaults(vMessages)
-	call lpImportSourceCode(vMessages)
 	call lpImportMetaDict(vMessages)
+	call lpImportSourceCode(vMessages)
+	call lpRunTableScripts(vMessages, "SYS")
 	call lpDoCompile(vMessages)
+;	call lpRunTableCreateScripts(vMessages)		; Substituted from 3 times call lpRunTableScripts()
+	call lpRunTableScripts(vMessages, "DEF")
 	call lpImportAppData(vMessages)
 	call lpCreateShortcuts(vMessages)
 
@@ -663,7 +758,8 @@ endvariables
 
 	return 0
 
-end ;doSetup</DAT>
+end ;doSetup
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>

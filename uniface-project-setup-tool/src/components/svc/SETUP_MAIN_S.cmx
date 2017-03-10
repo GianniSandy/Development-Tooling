@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2016-02-11T14:16:46.00</DAT>
-<DAT name="UCOMPSTAMP">2016-02-11T14:26:50.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-10T11:28:44.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-10T11:29:12.00</DAT>
 <DAT name="ULABEL">SETUP_MAIN_S</DAT>
 <DAT name="WVPOS">0</DAT>
 <DAT name="WHPOS">0</DAT>
@@ -202,7 +202,9 @@
 
 #Comment ----------------------------------------------
 </DAT>
-<DAT name="GENERAL" xml:space='preserve'>;---------------------------------------------------------
+<DAT name="GENERAL" xml:space='preserve'>#INCLUDE SYSTEM_LIBRARY:SETUP_VARIABLES
+
+;---------------------------------------------------------
 entry lpGetUserverCredentials
 ;---------------------------------------------------------
 params
@@ -345,7 +347,7 @@ entry lpCreateFileFromTemplate
 ;---------------------------------------------------------
 params
 	String pTemplatePath : IN
-	String pCopyToPath   : IN
+	String pCopyToPath   : INOUT
 endparams
 
 variables
@@ -359,6 +361,9 @@ endvariables
 	vCopyToPath   = lpResolveRelativePath(pCopyToPath)
 
 	call lpLog("Create %%pCopyToPath%%%")
+	if (vCopyToPath != pCopyToPath &amp; $scan(pCopyToPath, "${") &gt; 0)
+		call lpLog("real filename %%vCopyToPath%%%")
+	endif
 
 	lfileload vTemplatePath, vTemplateFile
 	if($status &lt; 0)
@@ -370,9 +375,10 @@ endvariables
 
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;project_name&gt;",          $options$-&gt;"project"-&gt;"PROJECT_NAME",     -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;project_path&gt;",          $options$-&gt;"project"-&gt;"PROJECT_PATH",     -1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;project_variation&gt;",     $options$-&gt;"project"-&gt;"PROJECT_VARIATION",-1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;project_language&gt;",      $options$-&gt;"project"-&gt;"PROJECT_LANGUAGE", -1)
 
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;uniface_packages_path&gt;", $options$-&gt;"config"-&gt;"PACKAGES_PATH",     -1)
-
 
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;uniface_path&gt;",          $options$-&gt;"uniface"-&gt;"UNIFACE_PATH",     -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;uniface_adm_path&gt;",      $options$-&gt;"uniface"-&gt;"UNIFACE_ADM_PATH", -1)
@@ -380,15 +386,17 @@ endvariables
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;udbg_port&gt;",             $options$-&gt;"uniface"-&gt;"UDBG_PORT",        -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;urouter_machine&gt;",       $options$-&gt;"uniface"-&gt;"UROUTER_MACHINE",  -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;urouter_port&gt;",          $options$-&gt;"uniface"-&gt;"UROUTER_PORT",     -1)
-	vTemplateFile = $replace(vTemplateFile, 1, "&lt;tomcat_port&gt;",           $options$-&gt;"uniface"-&gt;"TOMCAT_PORT",      -1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;utomcat_machine&gt;",       $options$-&gt;"uniface"-&gt;"UTOMCAT_MACHINE",  -1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;utomcat_port&gt;",          $options$-&gt;"uniface"-&gt;"UTOMCAT_PORT",     -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;userver_user&gt;",          $options$-&gt;"uniface"-&gt;"USERVER_USER",     -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;userver_password&gt;",      $options$-&gt;"uniface"-&gt;"USERVER_PASSWORD", -1)
 	vTemplateFile = $replace(vTemplateFile, 1, "&lt;userver_password&gt;",      $options$-&gt;"uniface"-&gt;"USERVER_PASSWORD", -1)
-	vTemplateFile = $replace(vTemplateFile, 1, "&lt;browser&gt;",               $options$-&gt;"uniface"-&gt;"BROWSER",          -1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;uniface_browser&gt;",       $options$-&gt;"uniface"-&gt;"UNIFACE_BROWSER",  -1)
+	vTemplateFile = $replace(vTemplateFile, 1, "&lt;uniface_xmleditor&gt;",     $options$-&gt;"uniface"-&gt;"UNIFACE_XMLEDITOR",-1)
 
 	;TODO: Code in file exists check
 	lfiledump vTemplateFile, vCopyToPath
-	if($status &lt; 0)
+	if($status &lt; 0 | !$fileexists(vCopyToPath))
 		; -1  - An I/O error occurred while writing FileName
 		; -4  - Cannot open FileName
 		; -13 - An error occurred while trying to perform the OS command. Set /pri=64 to display the exact error in the message frame
@@ -396,9 +404,19 @@ endvariables
 		; -17 - Network error: pipe broken
 		; -18 - Network error: failed to start new server
 		; -19 - Network error: fatal
-		call lpLog("&lt;span style='color:red;'&gt;FAILED. Couldn't write %%vCopyToPath%%%. $status: %%$status%%%&lt;/span&gt;")
+		if (!$fileexists(vCopyToPath))
+			call lpLog("&lt;span style='color:red;'&gt;FAILED. Couldn't generate %%vCopyToPath%%%.&lt;/span&gt;")
+			if ($oprsys() = "M" | $oprsys() = "N" | $oprsys() = "W")
+				call lpLog("&lt;span style='color:red;'&gt;FAILED. It could be because of VIRTUAL STORE on your PC?&lt;/span&gt;")
+				call lpLog("&lt;span style='color:red;'&gt;FAILED. Look into: C:\Users\%%$setting("","USERNAME","ENVDATA")%%%\\AppData\Local\VirtualStore\... &lt;/span&gt;")
+			endif
+		else
+			call lpLog("&lt;span style='color:red;'&gt;FAILED. Couldn't write %%vCopyToPath%%%. $status: %%$status%%%&lt;/span&gt;")
+		endif
 		return -1
 	endif
+
+	pCopyToPath = vCopyToPath
 
 	call lpLog("&lt;span style='color:green;'&gt;DONE&lt;/span&gt;")
 	return 0
@@ -501,9 +519,46 @@ endvariables
 		vPath = $concat(vBasePath, vPath[3])
 	endif
 
+	vPath = lpSubstituteVariables(vPath)
+
 	return vPath
 
-end ;lpResolveRelativePath</DAT>
+end ;lpResolveRelativePath
+
+
+;---------------------------------------------------------
+entry lpStripDiskLetter
+;---------------------------------------------------------
+returns string
+params
+	String pPath : IN
+endparams
+variables
+	string	vPath
+	numeric	vColon
+endvariables
+
+	vPath = pPath
+	if ($scan(vPath, ":") &gt; 0)
+		vColon = $scan(vPath, ":") + 1
+		vPath = vPath[vColon]
+	endif
+
+	return vPath
+
+end ;lpStripDiskLetter
+
+
+;---------------------------------------------------------
+entry lpDuplicateDirectory
+;---------------------------------------------------------
+params
+	string	pFrom	: IN
+	string	pTo	: IN
+endparams
+activate "SETUP_INIT_S".duplicateDirectory(pFrom, pTo)
+end ;lpDuplicateDirectory
+</DAT>
 <DAT name="FORMPIC" xml:space='preserve'>
  &uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=20&uSEP;HEI=1&uSEP;HOC=20&uSEP;VOC=1&uFRM;</DAT>
 <DAT name="SFUNC" xml:space='preserve'>;-------------------------------------------------------------------
@@ -521,20 +576,22 @@ endvariables
 	$options$-&gt;"project" = $newstruct
 
 	$options$-&gt;"uniface" = $newstruct
-	$options$-&gt;"uniface"-&gt;"UNIFACE_PATH"     = $setting("usys", "paths\usysins", "USYSDATA")
-	$options$-&gt;"uniface"-&gt;"UNIFACE_ADM_PATH" = $setting("usys", "paths\usysadm", "USYSDATA")
+	$options$-&gt;"uniface"-&gt;"UNIFACE_PATH"      = $setting("usys", "paths\usysins", "USYSDATA")
+	$options$-&gt;"uniface"-&gt;"UNIFACE_ADM_PATH"  = $setting("usys", "paths\usysadm", "USYSDATA")
 	vUsysIni = $concat($options$-&gt;"uniface"-&gt;"UNIFACE_ADM_PATH", "usys.ini")
 
-	$options$-&gt;"uniface"-&gt;"UROUTER_MACHINE"  = $setting(vUsysIni, "install\urouter_machine", "INIDATA")
-	$options$-&gt;"uniface"-&gt;"UROUTER_PORT"     = $setting(vUsysIni, "install\urouter_port",    "INIDATA")
-	$options$-&gt;"uniface"-&gt;"UDBG_MACHINE"     = $setting(vUsysIni, "install\udbg_machine",    "INIDATA")
-	$options$-&gt;"uniface"-&gt;"UDBG_PORT"        = $setting(vUsysIni, "install\udbg_port",       "INIDATA")
-	$options$-&gt;"uniface"-&gt;"TOMCAT_PORT"      = $setting(vUsysIni, "install\tomcat_port",     "INIDATA")
-	$options$-&gt;"uniface"-&gt;"BROWSER"          = $setting(vUsysIni, "install\browser",         "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UROUTER_MACHINE"   = $setting(vUsysIni, "install\urouter_machine", "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UROUTER_PORT"      = $setting(vUsysIni, "install\urouter_port",    "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UDBG_MACHINE"      = $setting(vUsysIni, "install\udbg_machine",    "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UDBG_PORT"         = $setting(vUsysIni, "install\udbg_port",       "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UTOMCAT_MACHINE"   = $setting(vUsysIni, "install\urouter_machine", "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UTOMCAT_PORT"      = $setting(vUsysIni, "install\tomcat_port",     "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UNIFACE_BROWSER"   = $setting(vUsysIni, "install\browser",         "INIDATA")
+	$options$-&gt;"uniface"-&gt;"UNIFACE_XMLEDITOR" = "%%"Placeholder for Uniface XML editor!%%""
 
 	call lpGetUserverCredentials(vUserName, vPassword)
-	$options$-&gt;"uniface"-&gt;"USERVER_USER"     = vUserName
-	$options$-&gt;"uniface"-&gt;"USERVER_PASSWORD" = vPassword
+	$options$-&gt;"uniface"-&gt;"USERVER_USER"      = vUserName
+	$options$-&gt;"uniface"-&gt;"USERVER_PASSWORD"  = vPassword
 
 	return 0
 
@@ -622,6 +679,8 @@ end ;setOption
 operation configureProject
 ;-------------------------------------------------------------------
 variables
+	String  vSections
+	String  vSection
 	Numeric vCount
 	Numeric vNumberOfTemplates
 	Numeric vNumberOfFolders	
@@ -639,56 +698,14 @@ variables
 	String  vSetupCreateFormPath
 	String  vProjectSetupRoot
 	String  vExePath
+	boolean vVirtual
+	string  vVirtualPath
+	string  vVirtualFile
+	string  vVirtualTemp
+	string  vVirtualError
+	numeric vLength
+	numeric vError
 endvariables
-
-	;-------------------------------------------------------------------------
-	; Loop over any template files and create the real versions
-	;-------------------------------------------------------------------------
-	vCount             = 1
-	vNumberOfTemplates = $options$-&gt;"config-file"-&gt;"templates"-&gt;*-&gt;$collsize
-
-	while(vCount &lt;= vNumberOfTemplates)
-
-		vFrom = $options$-&gt;"config-file"-&gt;"templates"-&gt;*{vCount}-&gt;"from"
-		;TODO: Throw an error if this isn't found
-
-		vTo   = $options$-&gt;"config-file"-&gt;"templates"-&gt;*{vCount}-&gt;"to"
-		;TODO: Throw an error if this isn't found
-
-		call lpCreateFileFromTemplate(vFrom, vTo)
-		if($status &lt; 0)
-			return 0
-		endif
-
-		vCount = vCount + 1
-
-	endwhile
-
-	;-------------------------------------------------------------------------
-	; Loop over any web template files and create the real versions
-	;-------------------------------------------------------------------------
-	vCount             = 1
-	vNumberOfTemplates = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*-&gt;$collsize
-
-	while(vCount &lt;= vNumberOfTemplates)
-
-		vFrom = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*{vCount}-&gt;"from"
-		;TODO: Throw an error if this isn't found
-
-		vTo   = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*{vCount}-&gt;"to"
-		;TODO: Throw an error if this isn't found
-
-		vTo = $replace(vTo, 1, "${projectname}", $options$-&gt;"project"-&gt;"PROJECT_NAME", -1)
-		vTo = $concat($options$-&gt;"uniface"-&gt;"UNIFACE_PATH", "common\tomcat\conf\Catalina\localhost\", vTo)
-
-		call lpCreateFileFromTemplate(vFrom, vTo)
-		if($status &lt; 0)
-			return 0
-		endif
-
-		vCount = vCount + 1
-
-	endwhile
 
 	;-------------------------------------------------------------------------
 	; Loop over any folders that need creating
@@ -705,12 +722,132 @@ endvariables
 		ldircreate vFolderName
 		;TODO: Log a failure
 
-		call lpLog("Created folder %%vFolderName%%%: &lt;span style='color:green;'&gt;DONE&lt;/span&gt;")
+		call lpLog("Created folder %%vFolderName%%%:")
+		call lpLog("&lt;span style='color:green;'&gt;DONE&lt;/span&gt;")
 
 		vCount = vCount + 1
 
 	endwhile
 
+	;-------------------------------------------------------------------------
+	; Loop over any template files and create the real versions
+	;-------------------------------------------------------------------------
+	vSections = "templates&uSEP;sql-templates-IDF&uSEP;sql-templates-SYS&uSEP;sql-templates-DEF"
+
+	forlist vSection in vSections
+		vCount             = 1
+		vNumberOfTemplates = $options$-&gt;"config-file"-&gt;"%%vSection%%%"-&gt;*-&gt;$collsize
+
+		while(vCount &lt;= vNumberOfTemplates)
+
+			vFrom = $options$-&gt;"config-file"-&gt;"%%vSection%%%"-&gt;*{vCount}-&gt;"from"
+			;TODO: Throw an error if this isn't found
+
+			vTo   = $options$-&gt;"config-file"-&gt;"%%vSection%%%"-&gt;*{vCount}-&gt;"to"
+			;TODO: Throw an error if this isn't found
+
+			vLength = $length(vFrom)
+			if (vFrom[vLength] = "\")
+				; It's a complete directory to be copied...
+				; Translate parameters
+				vFrom = lpSubstituteVariables(vFrom)
+				vTo = lpSubstituteVariables(vTo)
+				; Resolve relative paths
+				vFrom = lpResolveRelativePath(vFrom)
+				vTo = lpResolveRelativePath(vTo)
+				; Record to log...
+				call lpLog("Duplicating %%vFrom%%%")
+				call lpLog("...to %%vTo%%%")
+				; Time to copy...
+				call lpDuplicateDirectory(vFrom, vTo)
+				; Record to log...
+				if ($status &lt; 0)
+					call lpLog("&lt;span style='color:red;'&gt;FAILED. Couldn't write %%vTo%%%. $status: %%$status%%%&lt;/span&gt;")
+				else
+					call lpLog("&lt;span style='color:green;'&gt;DONE&lt;/span&gt;")
+				endif
+			else
+				; It's just a file to be copied...
+				call lpCreateFileFromTemplate(vFrom, vTo)
+			endif
+			if($status &lt; 0)
+				return 0
+			endif
+
+			vCount = vCount + 1
+
+		endwhile
+
+	endfor
+
+	;-------------------------------------------------------------------------
+	; Prepare for VirtualStore checks
+	;-------------------------------------------------------------------------
+	vVirtualError = 0
+	vVirtual = $options$-&gt;"project"-&gt;"PROJECT_VIRTUAL"
+	if (vVirtual)
+		vVirtualPath = $setting("", "LOCALAPPDATA", "ENVDATA")
+		if (vVirtualPath != "")
+			vVirtualPath = $concat(vVirtualPath, "\")
+			if ($lfileexists(vVirtualPath))
+				vVirtualPath = $concat(vVirtualPath, "VirtualStore\")
+				if (!$lfileexists(vVirtualPath))
+					call lpLog("&lt;span style='color:orange;'&gt;WARNING. VirtualStore check disabled: %%vVirtualPath%%% does not exist.&lt;/span&gt;")
+					vVirtual = "F"
+				endif
+			else
+				call lpLog("&lt;span style='color:orange;'&gt;WARNING. VirtualStore check disabled: %%vVirtualPath%%% does not exist.&lt;/span&gt;")
+				vVirtual = "F"
+			endif
+		else
+			call lpLog("&lt;span style='color:orange;'&gt;WARNING. VirtualStore check disabled: LOCALAPPDATA is NULL.&lt;/span&gt;")
+			vVirtual = "F"
+		endif
+	endif
+
+	;-------------------------------------------------------------------------
+	; Loop over any web template files and create the real versions
+	;-------------------------------------------------------------------------
+
+	vCount             = 1
+	vNumberOfTemplates = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*-&gt;$collsize
+
+	while(vCount &lt;= vNumberOfTemplates)
+
+		vFrom = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*{vCount}-&gt;"from"
+		;TODO: Throw an error if this isn't found
+
+		vTo   = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*{vCount}-&gt;"to"
+		;TODO: Throw an error if this isn't found
+
+		; vTo = $replace(vTo, 1, "${projectname}", $options$-&gt;"project"-&gt;"PROJECT_NAME", -1)
+		vTo = $concat($options$-&gt;"uniface"-&gt;"UNIFACE_PATH", "common\tomcat\conf\Catalina\localhost\", vTo)
+
+		call lpCreateFileFromTemplate(vFrom, vTo)
+		if($status &lt; 0)
+			return 0
+		endif
+
+		; Check if file was copied to the VirtualStore
+		if (vVirtual)
+			; Strip disk from vTo and add remaining part to vVirtualPath
+			vVirtualTemp = lpStripDiskLetter(vTo)
+			vVirtualTemp = vVirtualTemp[2]
+			vVirtualFile = $concat(vVirtualPath, vVirtualTemp)
+			; Verify file availability into VirtualStore
+			if ($lfileexists(vVirtualFile))
+				; If available compose message
+				call lpLog("&lt;span style='color:orange;'&gt;WARNING. File %%vTo%%% copied to your VirtualStore!&lt;/span&gt;")
+				call lpLog("&lt;span style='color:orange;'&gt;WARNING. Actual position: %%vVirtualFile%%%&lt;/span&gt;")
+				call lpLog("&lt;span style='color:orange;'&gt;WARNING. You MUST move it MANUALLY into REAL position before restarting your URouter.&lt;/span&gt;")
+				; ...then raise a flag...
+           vVirtualError = 1
+			endif
+		endif
+
+		vCount = vCount + 1
+
+	endwhile
 
 	;-------------------------------------------------------------------------
 	; Include urouter.asn in usyscom:adm\urouter.asn
@@ -723,7 +860,20 @@ endvariables
 		endif
 	endif
 
-	return 0
+	;-------------------------------------------------------------------------
+	; Advise front-end to warn user about:
+	; bit 1 (+1) - restarting URouter
+	; bit 2 (+2) - virtualStore in use
+	;-------------------------------------------------------------------------
+	vError = 0
+	vNumberOfTemplates = $options$-&gt;"config-file"-&gt;"web-templates"-&gt;*-&gt;$collsize
+	if (vNumberOfTemplates &gt; 0)
+		vError = vError + 1
+	endif
+	if (vVirtualError)
+		vError = vError + 2
+	endif
+	return vError
 
 end ;configureProject
 
@@ -734,7 +884,6 @@ operation setupProject
 params
 	Struct pMessages : OUT
 endparams
-
 variables
 	String  vBasePath
 	String  vPackagesDir
@@ -787,21 +936,31 @@ endvariables
 		return 0
 	endif
 
-	vSwitches = "/bat /dir=%%"%%vBasePath%%%%%" /adm=%%"%%vAdmPath%%%%%" /asn=%%"%%vAssignmentFile%%%%%""
+	vSwitches = "/bat /dir=%%"%%vBasePath%%%%%" /adm=%%"%%vAdmPath%%%%%""
 	if(vIniFile != "")
-		vSwitches = "/ini=%%"%%vIniFile%%%%%" %%vSwitches%%%"
+		vSwitches = "%%vSwitches%%% /ini=%%"%%vIniFile%%%%%""
 	endif
+	vSwitches = "%%vSwitches%%% /asn=%%"%%vAssignmentFile%%%%%""
 
 	if($options$-&gt;"config-file"-&gt;"build-switches"-&gt;"debug" == 1)
 		vSwitches = "/deb %%vSwitches%%%"
 	endif
 
-	vTempStruct-&gt;"local-setup" = $options$
-	structToXml vOptionsXml, vTempStruct
-	filedump vOptionsXml, lpResolveRelativePath(".\project.setup.xml")
+	if ($scan(vUnifacePath, " ") &gt; 0) vUnifacePath = "%%"%%vUnifacePath%%%%%""
+	if ($scan(vPackagesDir, " ") &gt; 0) vPackagesDir = "%%"%%vPackagesDir%%%%%""
+
 	vSetupFile = ".\project.setup.xml"
 
 	vCommand = "#%%vUnifacePath%%% %%vSwitches%%% SETUP %%vBasePath%%% %%vPackagesDir%%% setup %%vSetupFile%%%"
+
+	; Save command to setup file
+	$options$-&gt;"command" = $newstruct
+	$options$-&gt;"command" = vCommand
+
+	vTempStruct-&gt;"local-setup" = $options$
+	structToXml vOptionsXml, vTempStruct
+	filedump vOptionsXml, lpResolveRelativePath(vSetupFile)
+
 	;TODO: Should be using "OS".command, but this prevents the debugger from coming to the screen
 	spawn vCommand
 
@@ -811,7 +970,7 @@ endvariables
 	;Clean up the step 2 messages file
 	filedelete lpResolveRelativePath(".\step_2_messages.json")
 
-	;Navigate to http://localhost:8080/unifaceweb/APP_MAIN
+	;Navigate to your base menu (Mine: http://localhost:8080/unifaceweb/APP_MAIN)
 
 	return 0
 
@@ -831,7 +990,71 @@ endparams
 
 	return 0
 
-end ;registerLogger</DAT>
+end ;registerLogger
+
+
+;---------------------------------------------------------
+operation saveLog
+;---------------------------------------------------------
+params
+	string	pLog		: IN
+	string	pAppend	: IN
+endparams
+variables
+	string	vLogFile, vLog
+endvariables
+	vLogFile = ".\project.setup.log"
+	vLog = pLog
+	vLog = $replace(vLog, 1, "&lt;br&gt;", "%%^", -1)
+	vLog = $replace(vLog, 1, "&lt;BR&gt;", "%%^", -1)
+	vLog = $replace(vLog, 1, "&lt;Br&gt;", "%%^", -1)
+	vLog = $replace(vLog, 1, "&lt;span style='color:green;'&gt;", "", -1)
+	vLog = $replace(vLog, 1, "&lt;span style='color:orange;'&gt;", "", -1)
+	vLog = $replace(vLog, 1, "&lt;span style='color:red;'&gt;", "", -1)
+	vLog = $replace(vLog, 1, "&lt;/span&gt;", "", -1)
+	if (pAppend)
+		filedump/append vLog, lpResolveRelativePath(vLogFile)
+	else
+		filedump vLog, lpResolveRelativePath(vLogFile)
+	endif
+	if ($status &lt; 0)
+		return $status
+	endif
+	return 0
+end ;saveLog
+
+
+;---------------------------------------------------------
+operation getWarning
+;---------------------------------------------------------
+params
+	string	pName	: IN
+	boolean	pVal	: OUT
+endparams
+variables
+	string	vName
+	numeric	vCount, vNumWarns
+	boolean	vVal
+endvariables
+
+	pVal = 1
+
+	vCount    = 1
+	vNumWarns = $options$-&gt;"config-file"-&gt;"warnings"-&gt;*-&gt;$collsize
+
+	while(vCount &lt;= vNumWarns)
+		vName = $options$-&gt;"config-file"-&gt;"warnings"-&gt;*{vCount}-&gt;"name"
+		vVal  = $options$-&gt;"config-file"-&gt;"warnings"-&gt;*{vCount}-&gt;"value"
+		if ($uppercase(vName) == $uppercase(pName))
+			pVal = vVal
+			break
+		endif
+		vCount = vCount + 1
+	endwhile
+
+	return 0
+end ;getWarning
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>

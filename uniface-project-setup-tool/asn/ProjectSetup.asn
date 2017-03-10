@@ -1,10 +1,23 @@
 [SETTINGS]
-$putmess_logfile	.\log\ProjectSetup_%p.log
+$putmess_logfile	.\log\ProjectSetup-%p.log
 $search_resources	resources_only
+;
+; LATEST PROFILING & TRACING
+; Specify the log file in which to store profiling and or tracing informations
+;$PROC_LOG_FILE			.\log\ProjectSetup.trc
+; Enable Proc tracing. 
+;$PROC_TRACING			true
+; Specify a string or expression to precede each line of Proc tracing 
+;$PROC_TRACING_ADDITION		"Component: %%$componentname / Status: %%$status / Procerror: %%$procerror "
+; Enable Uniface profiling. 
+;$PROC_PROFILING			true
+; Specify the log file in which to store profiling information. 
+;$PROC_PROFILING_SEPARATOR	Gold
+;
 
 
 [RESOURCES]
-.\ext\MetaTools.uar
+.\ext\UnifaceMeta.uar
 
 usys:usys.uar
 usys:usysicon.uar
@@ -12,5 +25,4 @@ usys:udbg.uar
 
 
 [FILES]
-
 *.log			.\log\*.log

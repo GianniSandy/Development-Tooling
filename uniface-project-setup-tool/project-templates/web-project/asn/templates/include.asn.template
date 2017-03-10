@@ -1,0 +1,33 @@
+[SETTINGS]
+$enhanced_edit          all
+$curocc_video_hlt       backcolor=#55C1E8 forecolor=black
+$putmess_logfile	.\log\<project_name>-%p.log
+$search_resources	resources_only
+$resources_output	.\res\
+$nls_internal_time	UTC
+
+[RESOURCES]
+.\res\
+<uniface_packages_path>VersionControl9703\VersionControl.uar
+<uniface_packages_path>VersionControl9703\MetaTools.uar
+usys:uidf.uar
+
+[FILES]
+usys:*.xml		usysuniface:misc\*.xml
+
+javascript:*.js		.\web\uniface\dspjs\*.js
+
+UDBG.CNF		.\adm\debug.cnf
+*.exp			.\exp\*.exp
+; *.log			.\log\*.log
+; *.lst			.\lst\*.lst
+*.*lst			.\lst\*.*lst
+*.wsdl			.\web\WEB-INF\wsdl\*.wsdl	; For UDE only, look into Tomcat or UServer config to refer to this file type at runtime
+*.dtd			.\web\dtd\*.dtd			; For UDE only, look into Tomcat or UServer config to refer to this file type at runtime
+*.css			.\web\css\*.css			; For UDE only, look into Tomcat or UServer config to refer to this file type at runtime
+*.js			.\web\js\*.css			; For UDE only, look into Tomcat or UServer config to refer to this file type at runtime
+
+*.c			.\hdr\*.c
+*.h			.\hdr\*.h
+
+#file .\adm\dbms.asn

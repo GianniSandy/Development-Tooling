@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2016-02-04T09:33:01.00</DAT>
-<DAT name="UCOMPSTAMP">2016-02-04T09:33:01.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-09T11:17:18.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-09T11:17:18.00</DAT>
 <DAT name="ULABEL">SETUP_IMPORT</DAT>
 <DAT name="WVPOS">3</DAT>
 <DAT name="WHPOS">1</DAT>
@@ -230,6 +230,7 @@ variables
 	Numeric vLength
 	String  vTaskDescription
 	String  vTaskStatus
+	String  vErrWarDescr
 endvariables
 
 	$instancehandle-&gt;log("Performing Step 2 Setup Tasks...&lt;span style='color:orange;'&gt;IN PROGRESS&lt;/span&gt;")
@@ -246,17 +247,27 @@ endvariables
 
 		vTaskDescription = vMessages-&gt;*{vCount}-&gt;"DESC"
 		vTaskStatus      = vMessages-&gt;*{vCount}-&gt;"STATUS"
+		vErrWarDescr     = vMessages-&gt;*{vCount}-&gt;"ERROR_DESC"	; only for errors and warnings
 
 		if(vTaskStatus == "SUCCESS")
 			$instancehandle-&gt;log("%%vTaskDescription%%%...&lt;span style='color:green;'&gt;SUCCESS&lt;/span&gt;")
 		else
-			$instancehandle-&gt;log("%%vTaskDescription%%%...&lt;span style='color:red;'&gt;FAILED&lt;/span&gt;")
-			$instancehandle-&gt;log(vMessages-&gt;*{vCount}-&gt;"ERROR_DESC")
+			if(vTaskStatus != "FAILED")
+				$instancehandle-&gt;log("%%vTaskDescription%%%...&lt;span style='color:orange;'&gt;%%vTaskStatus%%%&lt;/span&gt;")
+			else
+				$instancehandle-&gt;log("%%vTaskDescription%%%...&lt;span style='color:red;'&gt;FAILED&lt;/span&gt;")
+			endif
+			; Enabling a further description when available ... tipically
+			; on error(s) (FAILED) or warning(s) (WARNING(S)) ...
+			if(vErrWarDescr != "") $instancehandle-&gt;log(vErrWarDescr)
 		endif
 
 		vCount = vCount + 1
 
 	endwhile
+
+	$$SETUP_MAIN_S-&gt;saveLog("%%^%%^%%^%%^%%^STEP 2:%%^", 1)
+	$$SETUP_MAIN_S-&gt;saveLog(LOG.DUMMY, 1)
 
 	return 0
 
@@ -275,7 +286,8 @@ endparams
 
 	return 0
 
-end ;log</DAT>
+end ;log
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>

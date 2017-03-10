@@ -1,25 +1,29 @@
-[SETTINGS]
-$search_resources  resources_only
-$resources_output  .\bin
-$nls_internal_time UTC
-
+﻿[SETTINGS]
+$search_resources	resources_only
+$resources_output	.\res
+$nls_internal_time	UTC
 
 [RESOURCES]
-.\bin
-
+.\res
 usys:uidf.uar
-usys:usys.uar
-usys:usysicon.uar
-usys:udbg.uar
-
 
 [FILES]
-usys:*.xml  usysuniface:.\misc\*.xml
+usys:*.xml		usysuniface:.\misc\*.xml
 
-*.log       .\log\*.log
-*.*lst      .\lst\*.*lst
+*.css			.\css\*.css
+*.dtd			.\dtd\*.dtd
+*.exp			.\exp\*.exp
+*.c			.\hdr\*.c
+*.h			.\hdr\*.h
+*.htm			.\htm\*.htm
+*.html			.\htm\*.html
+*.gif			.\img\*.gif
+*.jpg			.\img\*.jpg
+*.png			.\img\*.png
+*.js			.\js\*.js
+*.log			.\log\*.log
+*.*lst			.\lst\*.*lst
+*.sql			.\sql\*.sql
+*.xml			.\xml\*.xml
 
-*.dtd       .\dtd\*.dtd
-
-
-#file .\asn\dbms.asn
+#file .\adm\dbms.asn

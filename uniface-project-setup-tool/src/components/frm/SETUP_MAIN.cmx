@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2016-02-09T13:45:06.00</DAT>
-<DAT name="UCOMPSTAMP">2016-02-09T13:45:07.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-06T16:46:41.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-06T14:47:14.00</DAT>
 <DAT name="ULABEL">SETUP_MAIN</DAT>
 <DAT name="WVPOS">3</DAT>
 <DAT name="WHPOS">1</DAT>
@@ -205,14 +205,23 @@
 #Comment ----------------------------------------------
 </DAT>
 <DAT name="INIT" xml:space='preserve'>params
-	String vProjectDir  : IN
-	String vPackagesDir : IN
+	String pProjectDir  : IN
+	String pPackagesDir : IN
+	String pInitType		: IN
 endparams
 
 variables
 	String  vSetupFile
 	String  vUsysIni
+	String  vSetupFileTpl
+	String  vProjectDir
+	String  vPackagesDir
+	String  vInitType
 endvariables
+
+vProjectDir = pProjectDir
+vPackagesDir = pPackagesDir
+vInitType = pInitType
 
 $windowproperties($instancename, "state") = "state=MAXIMIZED"
 
@@ -227,6 +236,17 @@ if($status &lt; 0)
 	exit 0
 endif
 
+; Anticipating missing project.xml when started without any param...
+if (vProjectDir != "" &amp; vInitType = "")
+	vSetupFile = $concat(vProjectDir, "\project.xml")
+	if (!$fileexists(vSetupFile))
+		message/warning "Failed to load pre-customized project setup file!%%^Switching to interactive CREATE mode..."
+		vProjectDir = ""
+		vPackagesDir = ""
+		vInitType = ""
+	endif
+endif
+
 ;The location of the project.xml file could have been provided as a command line argument.
 if(vProjectDir == "")
 
@@ -234,7 +254,7 @@ if(vProjectDir == "")
 	$fieldsyntax("BACK_BUTTON.DUMMY") = "HID"
 
 	newinstance "SETUP_BROWSE", "SETUP_BROWSE"
-	activate "SETUP_BROWSE".exec()
+	activate "SETUP_BROWSE".exec($setting ("", "CURRENTDIR", "ENVDATA"))
 
 	CONTAINER.DUMMY = "SETUP_BROWSE"
 	setformfocus "SETUP_BROWSE"
@@ -245,6 +265,18 @@ else
 	;vProjectDir is the location of the setup file, vPackagesDir is the location of the Uniface packages
 	;folder on this machine.
 	vSetupFile = $concat(vProjectDir, "\project.xml")
+
+	if (!$lfileexists(vSetupFile) &amp; vInitType != "")
+		if (vInitType = "desktop") vInitType = "base"
+		vSetupFileTpl = $setting ("", "PROJSETUPDIR", "ENVDATA")
+		vSetupFileTpl = "%%vSetupFileTpl%%%\project-templates\%%vInitType%%%-project\project.xml"
+		lfilecopy vSetupFileTpl, vSetupFile
+		if ($status &lt; 0)
+			message/error "Failed to copy template setup file"
+			exit 0
+		endif
+	endif
+
 	$$SETUP_MAIN_S-&gt;loadSetupFile(vSetupFile, vPackagesDir)
 	if($status &lt; 0)
 		message/error "Failed to load setup file"
@@ -262,14 +294,11 @@ else
 endif
 
 edit</DAT>
-<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=63&uSEP;HEI=23&uSEP;HOC=63&uSEP;VOC=23&uFRM;
- &uFRM;TYP=L&uSEP;NAM=HEADER.DUMMY&uSEP;WID=60&uSEP;HEI=2&uSEP;CAR=MonoHuge&uSEP;LAB=Project Setup Wizard&uFRM;
+<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=75&uSEP;HEI=23&uSEP;HOC=75&uSEP;VOC=23&uFRM;
+ &uFRM;TYP=L&uSEP;NAM=CONTAINER.DUMMY&uSEP;WID=73&uSEP;HEI=2&uSEP;CAR=MonoHuge&uSEP;LAB=Project Setup Wizard&uFRM;
 
 
-&uFRM;TYP=F&uSEP;NAM=CONTAINER&uSEP;WID=61&uSEP;HEI=15&uFRM;
-
-
-
+&uFRM;TYP=F&uSEP;NAM=CONTAINER&uSEP;WID=74&uSEP;HEI=15&uFRM;
 
 
 
@@ -282,9 +311,29 @@ edit</DAT>
 
 
 
- &uFRM;TYP=F&uSEP;NAM=BACK_BUTTON&uSEP;WID=11&uSEP;HEI=2&uFRM;                                       &uFRM;TYP=F&uSEP;NAM=NEXT_BUTTON&uSEP;WID=10&uSEP;HEI=2&uFRM;</DAT>
+
+
+
+ &uFRM;TYP=F&uSEP;NAM=BACK_BUTTON&uSEP;WID=11&uSEP;HEI=2&uFRM;                                                    &uFRM;TYP=F&uSEP;NAM=NEXT_BUTTON&uSEP;WID=10&uSEP;HEI=2&uFRM;</DAT>
 <DAT name="WINPROP" xml:space='preserve'>CAPTION=&uSEP;CANRESIZE=&uSEP;CANICONIZE=&uSEP;CANZOOM=&uSEP;CANCLOSE=&uSEP;AUTOCLOSE=F&uSEP;SYSMENU=&uSEP;BACKIMAGE=&uSEP;IMAGE=&uSEP;MODAL=F&uSEP;ATTACHED=F&uSEP;UTYPE=PRIMARY&uSEP;DIRECTION=&uSEP;SPLIT=&uSEP;NOFORMSCROLL=&uSEP;BACKCOLOR=&uSEP;FORECOLOR=&uSEP;KEEPLAYOUT=&uSEP;LAYOUTSTORAGE=&uSEP;HALIGN=&uSEP;VALIGN=&uSEP;HSCALE=&uSEP;VSCALE=&uSEP;PRESERVEASPECT=&uSEP;OKBUTTON=&uSEP;WINDOWTYPE=PRIMARY&uSEP;TABPAGE=</DAT>
 <DAT name="SFUNC" xml:space='preserve'>;-----------------------------------------------
+operation setTitle
+;-----------------------------------------------
+params
+	string	pProjectType	: IN
+endparams
+variables
+	string	vCurrLabel, vNewLabel, vIndex
+endvariables
+vIndex = "text"
+getitem/id vCurrLabel, $labelproperties(CONTAINER), vIndex
+if (pProjectType != "")
+	vNewLabel = "%%vCurrLabel%%%, type %%pProjectType%%%"
+	$labelproperties(CONTAINER) = "%%vIndex%%%=%%vNewLabel%%%"
+endif
+end
+
+;-----------------------------------------------
 operation next
 ;-----------------------------------------------
 
@@ -324,12 +373,16 @@ operation next
 
 			$fieldsyntax("BACK_BUTTON.DUMMY") = "HID"
 
+			$fieldsyntax("NEXT_BUTTON.DUMMY") = "DIM"
+
 			newinstance "SETUP_CREATE", "SETUP_CREATE"
 			activate "SETUP_CREATE".exec()
 			CONTAINER.DUMMY = "SETUP_CREATE"
 			show
 			activate "SETUP_CREATE".go()
 	
+			$fieldsyntax("NEXT_BUTTON.DUMMY") = "YDI"
+
 		case "SETUP_CREATE"
 
 			$fieldsyntax("BACK_BUTTON.DUMMY") = "HID"
@@ -724,6 +777,22 @@ end ; trigger Resized
 <DAT name="DETAIL" xml:space='preserve'>$instancehandle-&gt;next()
 return 0</DAT>
 <DAT name="INITVALUE">Next</DAT>
+<DAT name="UISOBJID">F</DAT>
+<DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
+<DAT name="WEBWIDGETTYPE">EDITBOX</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2017-03-05T11:18:13.00</DAT>
+<DAT name="ULABEL">TITLE</DAT>
+<DAT name="GRP">DUMMY</DAT>
+<DAT name="UBASE">DUMMY</DAT>
+<DAT name="UFORM">SETUP_MAIN</DAT>
+<DAT name="U_DTYP">S</DAT>
+<DAT name="U_INDB">N</DAT>
+<DAT name="SYNTAXMOD">HID</DAT>
+<DAT name="INTERFACEMOD">C20</DAT>
+<DAT name="WIDGETTYPE">EDITBOX</DAT>
+<DAT name="UINHERIT">F</DAT>
 <DAT name="UISOBJID">F</DAT>
 <DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
 <DAT name="WEBWIDGETTYPE">EDITBOX</DAT>

@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2015-07-13T15:30:48.00</DAT>
-<DAT name="UCOMPSTAMP">2015-07-13T15:30:48.00</DAT>
+<DAT name="UTIMESTAMP">2017-02-16T10:43:43.00</DAT>
+<DAT name="UCOMPSTAMP">2017-02-16T10:43:45.00</DAT>
 <DAT name="ULABEL">SETUP_BROWSE</DAT>
 <DAT name="WVPOS">3</DAT>
 <DAT name="WHPOS">1</DAT>
@@ -204,17 +204,27 @@
 
 #Comment ----------------------------------------------
 </DAT>
-<DAT name="INIT">edit</DAT>
-<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=67&uSEP;HEI=21&uSEP;HOC=67&uSEP;VOC=21&uFRM;
+<DAT name="INIT" xml:space='preserve'>params
+	string	pCurrentDir	: IN
+endparams
+PROJECT_PATH.DUMMY = pCurrentDir
+edit</DAT>
+<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=100&uSEP;HEI=21&uSEP;HOC=100&uSEP;VOC=21&uFRM;
+&uFRM;TYP=L&uSEP;NAM=LABEL_3.DUMMY&uSEP;WID=49&uSEP;HEI=1&uSEP;LAB=Directory where the project will be setup:&uFRM;
+&uFRM;TYP=F&uSEP;NAM=PROJECT_PATH&uSEP;WID=100&uSEP;HEI=1&uFRM;
+
 &uFRM;TYP=L&uSEP;NAM=LABEL_1&uSEP;WID=49&uSEP;HEI=1&uSEP;LAB=Project config file location:&uFRM;
-&uFRM;TYP=F&uSEP;NAM=CONFIG_PATH&uSEP;WID=39&uSEP;HEI=1&uFRM;&uFRM;TYP=F&uSEP;NAM=BROWSE&uSEP;WID=10&uSEP;HEI=1&uFRM;
+&uFRM;TYP=F&uSEP;NAM=CONFIG_PATH&uSEP;WID=90&uSEP;HEI=1&uFRM;&uFRM;TYP=F&uSEP;NAM=BROWSE&uSEP;WID=10&uSEP;HEI=1&uFRM;
 
 &uFRM;TYP=L&uSEP;NAM=LABEL_2&uSEP;WID=49&uSEP;HEI=1&uSEP;LAB=Uniface packages folder location:&uFRM;
-&uFRM;TYP=F&uSEP;NAM=PACKAGES_PATH&uSEP;WID=39&uSEP;HEI=1&uFRM;&uFRM;TYP=F&uSEP;NAM=BROWSE_PACKAGES&uSEP;WID=10&uSEP;HEI=1&uFRM;</DAT>
+&uFRM;TYP=F&uSEP;NAM=PACKAGES_PATH&uSEP;WID=90&uSEP;HEI=1&uFRM;&uFRM;TYP=F&uSEP;NAM=BROWSE_PACKAGES&uSEP;WID=10&uSEP;HEI=1&uFRM;</DAT>
 <DAT name="WINPROP" xml:space='preserve'>CAPTION=F&uSEP;CANRESIZE=F&uSEP;CANICONIZE=F&uSEP;CANZOOM=F&uSEP;CANCLOSE=F&uSEP;AUTOCLOSE=F&uSEP;SYSMENU=F&uSEP;BACKIMAGE=&uSEP;IMAGE=&uSEP;MODAL=F&uSEP;ATTACHED=&uSEP;PAGE=T&uSEP;UTYPE=TAB&uSEP;DIRECTION=&uSEP;SPLIT=&uSEP;NOFORMSCROLL=&uSEP;BACKCOLOR=&uSEP;FORECOLOR=&uSEP;KEEPLAYOUT=&uSEP;LAYOUTSTORAGE=&uSEP;HALIGN=&uSEP;VALIGN=&uSEP;HSCALE=&uSEP;VSCALE=&uSEP;PRESERVEASPECT=&uSEP;OKBUTTON=&uSEP;WINDOWTYPE=TAB&uSEP;TABPAGE=</DAT>
 <DAT name="SFUNC" xml:space='preserve'>;------------------------------------------------------------
 operation completeStep
 ;------------------------------------------------------------
+variables
+	String	vSetupFile
+endvariables
 
 	if(CONFIG_PATH.DUMMY == "")
 		message/error "Please enter a project config file"
@@ -226,10 +236,30 @@ operation completeStep
 		return 1
 	endif
 
-	$$SETUP_MAIN_S-&gt;loadSetupFile(CONFIG_PATH.DUMMY, PACKAGES_PATH.DUMMY)
-	return 0
+	; Adding a \ at the end if not available...
+	if (PACKAGES_PATH.DUMMY[$length(PACKAGES_PATH.DUMMY)] != "\")
+		PACKAGES_PATH.DUMMY = "%%PACKAGES_PATH.DUMMY%%%\"
+	endif
+	if (PROJECT_PATH.DUMMY[$length(PROJECT_PATH.DUMMY)] != "\")
+		PROJECT_PATH.DUMMY = "%%PROJECT_PATH.DUMMY%%%\"
+	endif
 
-end ;completeStep</DAT>
+	; Copy template file on currentdir if not exist
+	vSetupFile = "%%PROJECT_PATH.DUMMY%%%project.xml"
+	if (!$lfileexists(vSetupFile))
+		lfilecopy CONFIG_PATH.DUMMY, vSetupFile
+		if ($status &lt; 0)
+			message/error "Failed to copy template setup file"
+			exit 0
+		endif
+	endif
+
+	$$SETUP_MAIN_S-&gt;loadSetupFile(vSetupFile, PACKAGES_PATH.DUMMY)
+	if ($status &lt; 0) message/error "Problem with setup file.%%^Please look into Message Frame!"
+	return $status
+
+end ;completeStep
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>
@@ -575,6 +605,22 @@ PACKAGES_PATH.DUMMY = $result</DAT>
 <DAT name="U_INDB">N</DAT>
 <DAT name="INTERFACEMOD">C*</DAT>
 <DAT name="WIDGETTYPE">EDITBOX</DAT>
+<DAT name="UINHERIT">F</DAT>
+<DAT name="UISOBJID">F</DAT>
+<DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
+<DAT name="WEBWIDGETTYPE">EDITBOX</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2017-02-04T14:24:43.00</DAT>
+<DAT name="ULABEL">PROJECT_PATH</DAT>
+<DAT name="GRP">DUMMY</DAT>
+<DAT name="UBASE">DUMMY</DAT>
+<DAT name="UFORM">SETUP_BROWSE</DAT>
+<DAT name="U_DTYP">S</DAT>
+<DAT name="U_INDB">N</DAT>
+<DAT name="SYNTAXMOD">NED,NPR</DAT>
+<DAT name="INTERFACEMOD">C*</DAT>
+<DAT name="WIDGETTYPE">NOEDITBOX</DAT>
 <DAT name="UINHERIT">F</DAT>
 <DAT name="UISOBJID">F</DAT>
 <DAT name="HTML_CTRLTYPE">U_INPUT</DAT>

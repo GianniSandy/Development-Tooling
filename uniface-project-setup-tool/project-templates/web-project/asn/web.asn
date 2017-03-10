@@ -1,0 +1,12 @@
+[WEB]
+; The following assignment setting is used to calculate the hash-values to protect non-editable fields.
+$server_secret			MvIbjsaq1TFoN4PdBntjiaaZeeiZkvZzBDrBqc2f6CjbXkNN7gs76IAqrCv5aMr9
+
+; Oltre ai link riportati qui sotto ci sono i link definiti direttamente nell'header dei componenti:
+;   <link rel="stylesheet" type="text/css" href="../css/udsp.css">
+
+; The following assignment setting is used to specify the location of DSP JavaScript
+; $js_base_url			../dspjs
+
+; The following assignment setting is used to specify the location of base URL for JavaScript and CSS resources for DSPs
+; $uniface_runtime_base_url	../common

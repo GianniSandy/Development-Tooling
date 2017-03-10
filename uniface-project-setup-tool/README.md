@@ -30,6 +30,9 @@ Information about the developer's local environment is detected from the Uniface
  * This batch file and the shortcuts that the tool create rely on an environment variable USYS96 to tell them where Uniface is installed. Create this variable now. For a default Uniface installation this might be C:\\Program Files (x86)\\Uniface\\Uniface 9.6.01\\
  * The tool can now be used by opening a command prompt in the root of the Uniface project you wish to setup and typing "projectsetup"
 
+WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, ProjectSetup97.bat as startup batch file and ProjectSetup97 as base dir into UnifacePackages folder.
+         Extension developed from Gianni Sandigliano on 2017.03.10 is based on this 9.7 environment.
+
 ## Usage ##
 
 ### Available Template Substitutions ###
@@ -43,11 +46,35 @@ Information about the developer's local environment is detected from the Uniface
  * <udbg_port>:
  * <urouter_machine>:
  * <urouter_port>:
- * <tomcat_port>:
+ * <utomcat_machine>:
+ * <utomcat_port>:
  * <userver_user>:
  * <userver_password>:
- * <userver_password>:
- * <browser>:
+ * <uniface_browser>:
+ * <uniface_xmleditor>:
+
+### Available Substitutions for filenames or other params in project setup file ###
+
+ * ${project_name}
+ * ${project_path}
+ * ${uniface_packages_path}
+ * ${uniface_path}
+ * ${uniface_adm_path}
+ * ${udbg_machine}
+ * ${udbg_port}
+ * ${urouter_machine}
+ * ${urouter_port}
+ * ${utomcat_machine}
+ * ${utomcat_port}
+ * ${userver_user}
+ * ${userver_password}
+ * ${uniface_browser}
+ 
+   are maintaned for compatibility also these old substitutions:
+ * ${projectname}
+ * ${debugport}
+ * ${browser}
+
 
 ### Project Setup Configuration File ###
 
@@ -63,10 +90,34 @@ Information about the developer's local environment is detected from the Uniface
  * do-compile: Run a full compile after importing everything
  * import-defaults: Import the Uniface defaults (if false then Uniface defaults should be included as part of the project source)
 
-## Contributing to the project ##
+## Contributions to the project ##
+
+Gianni Sandigliano 2017.02.05
+ Modified PROJECTSETUP.BAT script: Added syntax definition.
+ Modified PROJECTSETUP.BAT script: Added checks to switch to another disk when needed.
+ Modified PROJECTSETUP.BAT script: Added parameters check.
+Gianni Sandigliano 2017-02-10
+ Modified PROJECTSETUP.BAT script: Added parameters normalization.
+ Modified source SETUP_MAIN_S to fully support variables substitution into original and destination filenames.
+Gianni Sandigliano 2017-02-15
+ Modified source SETUP_STEP2_S to support origins directories with spaces into names (Example: C:\Program Files (x86)\BlaBlaBla).
+ Modified source SETUP_MAIN_S to interactively go back to select project template.
+Gianni Sandigliano 2017-02-20
+ Modified source SETUP_MAIN_S to support copying a whole directory tree.
+ Modified source SETUP_PROJECT to ask for $variation and $language as project parameters.
+Gianni Sandigliano 2017-02-28
+ Modified source SETUP_MAIN_S to support project template name and type in XML project config file.
+ Modified source SETUP_MAIN_S added 3 standard checks to project templates (web-templates usage, file saved into local virtualStore, security warning on project base directory).
+Gianni Sandigliano 2017-03-09
+ Modified source SETUP_MAIN_S and SETUP_STEP2_S to save project.setup.log.
+ Modified source SETUP_STEP2_S to support (SQL) script execution on 3 paths: $IDF, $SYS, $DEF.
+ Modified source SETUP_STEP2_S to support data import on 3 paths: $IDF, $SYS, $DEF.
+Gianni Sandigliano 2017-03-10 It works! Committed
 
 
 ## Contributors ##
 
  * James Rodger
  * Thomas Shore
+ * Gianni Sandigliano
+ 

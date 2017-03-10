@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2015-07-13T14:07:39.00</DAT>
-<DAT name="UCOMPSTAMP">2015-07-13T14:08:45.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-06T22:06:43.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-06T22:06:43.00</DAT>
 <DAT name="ULABEL">SETUP_CREATE</DAT>
 <DAT name="WVPOS">3</DAT>
 <DAT name="WHPOS">1</DAT>
@@ -224,9 +224,36 @@ end ;init
 ;----------------------------------------------------------------------------
 operation go
 ;----------------------------------------------------------------------------
+variables
+	boolean	vWarn
+	numeric	vStatus, vBit
+endvariables
 
 	$$SETUP_MAIN_S-&gt;registerLogger($instancehandle, "log")
 	$$SETUP_MAIN_S-&gt;configureProject()
+	; The exiting status must be analyzed bit by bit; if needed add more signals into SETUP_MAIN_S
+	; and present result to enduser here
+	vStatus = $status
+	vBit = 4
+	if (vStatus &gt;= vBit)
+		message/warning "Just an example for another higher bit value %%vBit%%%"
+		vStatus = vStatus - vBit
+	endif
+	vBit = 2
+	if (vStatus &gt;= vBit)
+		message/warning "Project configuration copied files to your VirtualStore.%%^Please verify log!"
+		vStatus = vStatus - vBit
+	endif
+	$$SETUP_MAIN_S-&gt;getWarning("UsingWebTemplates", vWarn)
+	if (vWarn)
+		vBit = 1
+		if (vStatus &gt;= vBit)
+			message/warning "Web-Templates were configured.%%^Your URouter probably should be restarted!"
+			vStatus = vStatus - vBit
+		endif
+	endif
+	$$SETUP_MAIN_S-&gt;saveLog("STEP 1:%%^", 0)
+	$$SETUP_MAIN_S-&gt;saveLog(LOG.DUMMY, 1)
 
 	return 0
 
@@ -245,7 +272,8 @@ endparams
 
 	return 0
 
-end ;log</DAT>
+end ;log
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>

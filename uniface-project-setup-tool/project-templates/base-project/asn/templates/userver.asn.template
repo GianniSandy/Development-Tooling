@@ -1,0 +1,60 @@
+; Uniface WebApplication Server Assignment file (Development)
+; This assignment file is used by DSP, USP and SOAP
+#file .\adm\dbms.asn
+
+[SETTINGS]
+$putmess_logfile	.\log\<project_name>-%p.log
+
+; $test_mode_components forces the reload of the signatures and component definitions on every request.
+; This has a negative impact on performance, so only use this assignment setting during development/test.
+$test_mode_components
+
+; Note: when using Standardized Deployment ($search_resources=resources_only) the following settings are not used.
+;       Uncomment the below lines when switching to Classic Deployment.
+; $search_descriptor	dbms_first
+; $search_object	dbms_first
+
+$search_resources	resources_only
+
+$variation		<project_name>
+
+$ioprint		63
+; $print_assignments
+
+[RESOURCES]
+; Specify your UAR resource files or resource directories:
+.\res\
+
+[FILES]
+; Note: when using Standardized Deployment ($search_resources=resources_only) file redirections are not used.
+;       Uncomment the below lines when switching to Classic Deployment.
+
+; Add here specific file redirections in case you compile and test in Classic Deployment mode:
+; ...
+; usys:udesc.urr          usys:udesc.urr
+; usys:uobj.dol           usys:uobj.dol
+; usys:userver.aps        usys:userver.aps
+; usys:*.*                usys:*.*
+; Add here specific component redirections in case you compile and test in Classic Deployment mode:
+; ...
+; *.usp                  .\*.usp
+; *.dsp                  .\*.dsp
+
+
+[DRIVER_SETTINGS]
+
+
+[PATHS]
+
+
+[ENTITIES]
+
+
+[LOGICALS]
+
+; Specify your filters using a comma separated list in order of processing
+; UWEBOUTPUTFILTERS = mywebfilter
+
+[USER_3GL]
+
+

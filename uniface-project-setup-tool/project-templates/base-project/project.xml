@@ -1,35 +1,148 @@
 <setup-config>
 
-    <!--
-        These files will be copied from the "from" location to the "to" location with values
-        substituted in for the local environment
+    <templateName>BASE</templateName>
+    <templateType>DESKTOP</templateType>
+
+    <!-- A list of folders that the setup tool should create. These would usually be folders that the project needs but don't make sense
+         to commit to version control. For example, a log folder.
     -->
+    <folders>
+        <folder name=".\adm" />
+        <folder name=".\bin" />
+        <folder name=".\css" />
+        <folder name=".\dat" />
+        <folder name=".\dbs" />
+        <folder name=".\dtd" />
+        <folder name=".\exp" />
+        <folder name=".\ext" />
+        <folder name=".\hdr" />
+        <folder name=".\htm" />
+        <folder name=".\img" />
+        <folder name=".\js" />
+        <folder name=".\log" />
+        <folder name=".\lst" />
+        <folder name=".\org" />
+        <folder name=".\res" />
+        <folder name=".\sql" />
+        <folder name=".\src" />
+        <folder name=".\tmp" />
+        <folder name=".\xml" />
+        <folder name=".\xin" />
+        <folder name=".\xou" />
+    </folders>
+
+    <!-- These files will be copied from the "from" to the "to" location and do NOT necessarily need values substituted -->
     <templates>
-        <template from=".\asn\templates\idf.asn.template" to=".\asn\idf.asn" />
-        <template from=".\asn\templates\setup.asn.template" to=".\asn\setup.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\dbms.asn"          to=".\adm\dbms.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\include.asn"       to=".\adm\include.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\vc.asn"            to=".\adm\vc.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\adm\Dir4configurationFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\bin\Dir4externalExeDll-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\css\Dir4CSSfiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\dat\Dir4dataToBeLoaded-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\dat\usysprf.xml"       to=".\dat\usysprf.xml" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\dat\uusrprf.xml"       to=".\dat\uusrprf.xml" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\dbs\Dir4databaseFilesOnFileSystem-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\dtd\Dir4DTDfiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\exp\Dir4exportFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\ext\Dir4extensionFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\hdr\Dir4headersAndSources3glFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\htm\Dir4htmlFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\img\Dir4imagesFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\js\Dir4javascriptFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\log\Dir4logFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\lst\Dir4listingFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\org\Dir4externalOriginalFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\res\Dir4unifaceResourcesFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\sql\Dir4sqlFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\src\Dir4toFromVersionControlFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\tmp\Dir4temporaryFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\xml\Dir4xmlFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\xin\Dir4inputInterchangeFiles-ReadMe.txt" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\oth\ReadMe.txt"        to=".\xou\Dir4outputInterchangeFiles-ReadMe.txt" />
+    </templates>
+
+    <!-- These files will be copied from the "from" to the "to" location with values substituted in from the project environment -->
+    <templates>
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\idf.asn.template"     to=".\adm\idf.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\setup.asn.template"   to=".\adm\setup.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\udbg.asn.template"    to=".\adm\udbg.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\userver.asn.template" to=".\adm\${project_name}.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\usys.asn.template"    to=".\adm\usys.asn" />
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\base-project\asn\templates\usys.ini.template"    to=".\adm\usys.ini" />
     </templates>
 
     <!--
-        A list of folders that the setup tool should create. These would usually
-        be folders that the project needs but don't make sense to commit to
-        version control. For example, a log folder.
+        These files will be copied from the "from" location to the "to" location; if copied in .\sql\ later will be executed on $IDF path ...
     -->
-    <folders>
-        <folder name=".\bin" />
-        <folder name=".\dbms" />
-        <folder name=".\log" />
-        <folder name=".\lst" />
-    </folders>
+    <sql-templates-IDF>
+        <template from="${uniface_packages_path}ProjectSetup97\project-templates\web-project\sql\VC_SLE_tables.sql"           to=".\sql\VC_SLE_tables.sql" />
+    </sql-templates-IDF>
 
-    <build-switches asn=".\asn\setup.asn" debug="0" />
+    <!--
+        These files will be copied from the "from" location to the "to" location; if copied in .\sql\ later will be executed on $SYS path ...
+    -->
+    <sql-templates-SYS>
+        <!--
+            <template from="${uniface_packages_path}ProjectSetup97\project-templates\web-project\sql\MyOtherScript.sql"       to=".\sql\MyOtherScript.sql" />
+        -->
+    </sql-templates-SYS>
+
+    <!--
+        These files will be copied from the "from" location to the "to" location; if copied in .\sql\ later will be executed on $DEF path ...
+    -->
+    <sql-templates-DEF>
+        <!--
+            <template from="${uniface_packages_path}ProjectSetup97\project-templates\web-project\sql\MyFurtherScript.sql"     to=".\sql\MyFurtherScript.sql" />
+        -->
+    </sql-templates-DEF>
+
+    <build-switches asn=".\adm\setup.asn" debug="0" />
+
+    <!-- Run table creation scripts on $IDF:
+         any files copied into .\sql folder are executed via Uniface sql command
+         each file is executed on $path identified from section where it was initially defined:
+         templates-sql-IDF on $IDF
+    -->
+
+    <!-- Import Uniface source -->
+    <import-defaults>1</import-defaults>
+
+    <!-- Import Uniface meta dictionary -->
+    <import-meta-dict>1</import-meta-dict>
+
+    <!-- Run table creation scripts on $SYS:
+         any files copied into .\sql folder are executed via Uniface sql command
+         each file is executed on $path identified from section where it was initially defined:
+         templates-sql-SYS on $SYS
+    -->
+
+    <!-- Sources available into .\src tree as VersionControl files are automatically imported (See Uniface VC & MetaTools extension) -->
+    <do-import>1</do-import>
+
+    <!-- Run table creation scripts on $DEF:
+         any files copied into .\sql folder are executed via Uniface sql command
+         each file is executed on $path identified from section where it was initially defined:
+         templates-sql-DEF on $DEF
+    -->
+
+    <!-- Import application data from XML -->
+    <data-import-files>
+        <xmlfile location=".\dat\usysprf.xml" path="SYS" />
+        <xmlfile location=".\dat\uusrprf.xml" path="SYS" />
+    </data-import-files>
+
+    <do-compile>1</do-compile>
 
     <shortcuts>
-        <shortcut name='Desktop Project Template - Development'
-            target='%USYS97%\common\bin\idf.exe'
-            args='/adm="%USYS97%\uniface\adm\" /asn=./asn/idf.asn ?' />
+        <shortcut name='${project_name} Desktop Project Development' target='"%USYS97%\common\bin\idf.exe"' args='/dir=${project_path} /adm=${project_path}adm ?' />
+        <shortcut name='${project_name} Desktop Project Runtime' target='"%USYS97%\common\bin\uniface.exe"' args='/dir=${project_path} /adm=${project_path}adm ${project_name}' />
     </shortcuts>
 
-    <do-import>1</do-import>
-    <do-compile>1</do-compile>
+    <warnings>
+	<warning name="IsWebProject"         value="0" />
+	<warning name="CheckingVirtualStore" value="0" />
+	<warning name="UsingWebTemplates"    value="0" />
+    </warnings>
 
 </setup-config>

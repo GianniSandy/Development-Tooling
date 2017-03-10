@@ -1,0 +1,402 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
+<!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
+<UNIFACE release="9.7" xmlengine="2.0">
+<TABLE>
+<DSC name="USYSPRF" model="SYSENV" system="S" pseudo ="83" level="1" noupdate="0"
+ rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="0" charset=".U">
+<FLD name="UTIMESTAMP" seqno="1" type="E" level="2" pack="0" scale="0" length="15"
+ pointer="0" inum="0" ufocc="0" />
+<FLD name="LOCID" seqno="2" type="S" level="2" pack="0" scale="0" length="16"
+ pointer="0" inum="1" ufocc="0" mandatory="yes" idxnum="1" idxsnr="101" />
+<FLD name="LOCTYPE" seqno="3" type="S" level="2" pack="0" scale="0" length="1"
+ pointer="0" inum="1" ufocc="0" mandatory="yes" idxnum="1" idxsnr="102" />
+<FLD name="PREFID" seqno="4" type="S" level="2" pack="0" scale="0" length="16"
+ pointer="0" inum="1" ufocc="0" mandatory="yes" idxnum="1" idxsnr="103" />
+<FLD name="UUSERNAME" seqno="5" type="S" level="2" pack="0" scale="0" length="16"
+ pointer="0" inum="1" ufocc="0" mandatory="yes" idxnum="1" idxsnr="104" />
+<FLD name="UUSERTYPE" seqno="6" type="S" level="2" pack="0" scale="0" length="1"
+ pointer="0" inum="0" ufocc="0" />
+<FLD name="ACTVAL" seqno="7" type="S" level="2" pack="141" scale="0" length="0"
+ pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\C1,0,0,0,,0,0,0,," />
+</DSC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCUST_UUIMPO49</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">UUIMPO49</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCUST_UUEXPO49</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">UUEXPO49</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCUST_UUCLUS49</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">UUCLUS49</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UDEFEXPORT</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">XML</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UPERMISSION</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">0</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">USCCI_AUTO</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">F</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">USCCI_CHGPATH</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">T</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">USCCI_CHGPROJ</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">T</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">USCCI_GETVERSION</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">0</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING1</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>EXTN_CL=1&uSEP;EXTN_PR=&uSEP;EXTN_PO=.cmx+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING2</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;EXTN_OP=1&uSEP;SPEC_CL=1&uSEP;SPEC_PR=&uSEP;S+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING3</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>PEC_PO=.sgx&uSEP;SPEC_OP=1&uSEP;CONC_CL=1+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING4</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;CONC_PR=&uSEP;CONC_PO=.amx&uSEP;ARCH_CL=+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING5</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>1&uSEP;ARCH_PR=&uSEP;ARCH_PO=.arx&uSEP;APPL_CL+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING6</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>=1&uSEP;APPL_PR=&uSEP;APPL_PO=.shx&uSEP;EINT_C+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING7</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>L=2&uSEP;EINT_PR=&uSEP;EINT_PO=.eix&uSEP;INTT_+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING8</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>CL=2&uSEP;INTT_PR=&uSEP;INTT_PO=.fix&uSEP;SYNT+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING9</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>_CL=2&uSEP;SYNT_PR=&uSEP;SYNT_PO=.fsx&uSEP;LAY+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING10</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>T_CL=2&uSEP;LAYT_PR=&uSEP;LAYT_PO=.flx&uSEP;FL+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING11</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>DT_CL=2&uSEP;FLDT_PR=&uSEP;FLDT_PO=.ftx&uSEP;L+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING12</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>IBR_CL=1&uSEP;LIBR_PR=&uSEP;LIBR_PO=.lbx&uSEP;+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING13</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>LIBR_OP=0&uSEP;CPRC_CL=3&uSEP;CPRC_PR=&uSEP;CP+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING14</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>RC_PO=.prx&uSEP;INCL_CL=3&uSEP;INCL_PR=&uSEP;I+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING15</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>NCL_PO=.ipx&uSEP;DEVC_CL=3&uSEP;DEVC_PR=&uSEP;+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING16</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>DEVC_PO=.dtx&uSEP;TRAN_CL=3&uSEP;TRAN_PR=+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING17</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;TRAN_PO=.ktx&uSEP;PANL_CL=3&uSEP;PANL_PR+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING18</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>=&uSEP;PANL_PO=.pnx&uSEP;MESG_CL=3&uSEP;MESG_P+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING19</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>R=&uSEP;MESG_PO=.msx&uSEP;GLYP_CL=3&uSEP;GLYP_+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING20</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>PR=&uSEP;GLYP_PO=.glx&uSEP;MENU_CL=3&uSEP;MENU+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING21</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>_PR=&uSEP;MENU_PO=.mnx&uSEP;GFMT_CL=3&uSEP;GFM+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING22</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>T_PR=&uSEP;GFMT_PO=.fmx&uSEP;LANS_CL=5&uSEP;LA+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING23</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>NS_PR=&uSEP;LANS_PO=.lnx&uSEP;CREG_CL=3&uSEP;C+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING24</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>REG_PR=&uSEP;CREG_PO=.vrx&uSEP;GCNT_CL=3&uSEP;+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UCLUSTERING25</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>GCNT_PR=&uSEP;GCNT_PO=.cnx</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS1</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>CLUS100=0&uSEP;PRE100=&uSEP;POST100=.vpx&uSEP;+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS2</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>CHECK100=F&uSEP;CLUS101=0&uSEP;PRE101=&uSEP;PO+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS3</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>ST101=.npx&uSEP;CHECK101=F&uSEP;CLUS102=0+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS4</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;PRE102=&uSEP;POST102=.pkx&uSEP;CLUS103=0+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS5</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;PRE103=&uSEP;POST103=.pkx&uSEP;CLUS104=1+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS6</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;PRE104=&uSEP;POST104=.cpx&uSEP;CLUS105=1+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS7</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL" xml:space='preserve'>&uSEP;PRE105=&uSEP;POST105=.orx&uSEP;ADDTPDIR=+</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2016-02-26T18:26:36.00</DAT>
+<DAT name="LOCID">GLOBAL</DAT>
+<DAT name="LOCTYPE">E</DAT>
+<DAT name="PREFID">UBPA_CLUS8</DAT>
+<DAT name="UUSERNAME">SYSTEM</DAT>
+<DAT name="UUSERTYPE">S</DAT>
+<DAT name="ACTVAL">F</DAT>
+</OCC>
+</TABLE>
+</UNIFACE>

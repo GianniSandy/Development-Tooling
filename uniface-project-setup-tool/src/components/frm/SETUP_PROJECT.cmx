@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='UTF-8' ?>
 <!-- Created by Uniface - (C) Uniface B.V. All rights reserved -->
 <!DOCTYPE UNIFACE PUBLIC "UNIFACE.DTD" "UNIFACE.DTD">
-<UNIFACE release="9.6" xmlengine="2.0">
+<UNIFACE release="9.7" xmlengine="2.0">
 <TABLE>
 <DSC name="UFORM" model="DICT" system="S" pseudo ="73" level="1" noupdate="0"
  rbk="0" ffsql="0" transnr="0" segsize="0" ufocc="1000" charset=".U">
@@ -167,12 +167,12 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2015-07-13T13:40:56.00</DAT>
-<DAT name="UCOMPSTAMP">2015-07-13T14:08:52.00</DAT>
+<DAT name="UTIMESTAMP">2017-03-06T22:01:53.00</DAT>
+<DAT name="UCOMPSTAMP">2017-03-06T22:01:56.00</DAT>
 <DAT name="ULABEL">SETUP_PROJECT</DAT>
 <DAT name="WVPOS">3</DAT>
 <DAT name="WHPOS">1</DAT>
-<DAT name="WVSIZ">8</DAT>
+<DAT name="WVSIZ">12</DAT>
 <DAT name="WHSIZ">49</DAT>
 <DAT name="CLRSCRN">N</DAT>
 <DAT name="UBORDER">N</DAT>
@@ -204,23 +204,61 @@
 
 #Comment ----------------------------------------------
 </DAT>
-<DAT name="INIT" xml:space='preserve'>$$SETUP_MAIN_S-&gt;getOption("project", "PROJECT_NAME", PROJECT_NAME.DUMMY)
-$$SETUP_MAIN_S-&gt;getOption("project", "PROJECT_PATH", PROJECT_PATH.DUMMY)
+<DAT name="INIT" xml:space='preserve'>variables
+	string	vTemplateType
+	boolean	vWarn
+endvariables
 
-edit</DAT>
-<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=49&uSEP;HEI=8&uSEP;HOC=49&uSEP;VOC=8&uFRM;
+$$SETUP_MAIN_S-&gt;getOption("project", "PROJECT_NAME", PROJECT_NAME.DUMMY)
+$$SETUP_MAIN_S-&gt;getOption("project", "PROJECT_PATH", PROJECT_PATH.DUMMY)
+$$SETUP_MAIN_S-&gt;getOption("project", "PROJECT_NAME", PROJECT_VARIATION.DUMMY)
+PROJECT_LANGUAGE.DUMMY = "USA"
+
+$$SETUP_MAIN_S-&gt;getWarning("CheckingVirtualStore", vWarn)
+if (!vWarn)
+	PROJECT_VIRTUALSTORE.DUMMY = 0
+	fieldsyntax "PROJECT_VIRTUALSTORE.DUMMY", "HID"
+endif
+
+$$SETUP_MAIN_S-&gt;getOption("config-file", "templateType", vTemplateType)
+activate $instanceparent.setTitle(vTemplateType)
+
+$$SETUP_MAIN_S-&gt;getWarning("IsWebProject", vWarn)
+if (vWarn)
+	if ($uppercase(vTemplateType) = "WEB")
+		askmess "You are going to setup a type %%vTemplateType%%% project.%%^Have you granted %%"Full Access%%" to %%"Uniface Server Users%%" group for base project directory?"
+		if ($status = 0)
+			message/error "Base directory of this project should be given %%"Full Access%%" to %%"Uniface Server Users%%" group before starting project setup.%%^Exiting..."
+			apexit
+		endif
+	endif
+endif
+
+edit
+</DAT>
+<DAT name="FORMPIC" xml:space='preserve'>&uFRM;TYP=E&uSEP;NAM=DUMMY.DUMMY&uSEP;WID=49&uSEP;HEI=12&uSEP;HOC=49&uSEP;VOC=12&uFRM;
  &uFRM;TYP=L&uSEP;NAM=PROJECT_NAME.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Project Name&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_NAME&uSEP;WID=25&uSEP;HEI=1&uFRM;
 
- &uFRM;TYP=L&uSEP;NAM=PROJECT_PATH.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Project Path&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_PATH&uSEP;WID=25&uSEP;HEI=1&uFRM;</DAT>
+ &uFRM;TYP=L&uSEP;NAM=PROJECT_PATH.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Project Path&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_PATH&uSEP;WID=25&uSEP;HEI=1&uFRM;
+
+ &uFRM;TYP=L&uSEP;NAM=PROJECT_VARIATION.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Project $variation&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_VARIATION&uSEP;WID=16&uSEP;HEI=1&uFRM;
+
+ &uFRM;TYP=L&uSEP;NAM=PROJECT_LANGUAGE.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Project $language&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_LANGUAGE&uSEP;WID=5&uSEP;HEI=1&uFRM;
+
+ &uFRM;TYP=L&uSEP;NAM=PROJECT_VIRTUALSTORE.DUMMY&uSEP;WID=18&uSEP;HEI=1&uSEP;LAB=Check for VirtualStore?&uFRM;&uFRM;TYP=F&uSEP;NAM=PROJECT_VIRTUALSTORE&uSEP;WID=2&uSEP;HEI=1&uFRM;</DAT>
 <DAT name="WINPROP" xml:space='preserve'>CAPTION=F&uSEP;CANRESIZE=F&uSEP;CANICONIZE=F&uSEP;CANZOOM=F&uSEP;CANCLOSE=F&uSEP;AUTOCLOSE=F&uSEP;SYSMENU=F&uSEP;BACKIMAGE=&uSEP;IMAGE=&uSEP;MODAL=F&uSEP;ATTACHED=&uSEP;PAGE=T&uSEP;UTYPE=TAB&uSEP;DIRECTION=&uSEP;SPLIT=&uSEP;NOFORMSCROLL=&uSEP;BACKCOLOR=&uSEP;FORECOLOR=&uSEP;KEEPLAYOUT=&uSEP;LAYOUTSTORAGE=&uSEP;HALIGN=&uSEP;VALIGN=&uSEP;HSCALE=&uSEP;VSCALE=&uSEP;PRESERVEASPECT=&uSEP;OKBUTTON=&uSEP;WINDOWTYPE=TAB&uSEP;TABPAGE=</DAT>
 <DAT name="SFUNC" xml:space='preserve'>;------------------------------------------------------------
 operation completeStep
 ;------------------------------------------------------------
 
 	$$SETUP_MAIN_S-&gt;setOption("project", "PROJECT_NAME", PROJECT_NAME.DUMMY)
+	$$SETUP_MAIN_S-&gt;setOption("project", "PROJECT_VARIATION", PROJECT_VARIATION.DUMMY)
+	$$SETUP_MAIN_S-&gt;setOption("project", "PROJECT_LANGUAGE", PROJECT_LANGUAGE.DUMMY)
+	$$SETUP_MAIN_S-&gt;setOption("project", "PROJECT_VIRTUAL", PROJECT_VIRTUALSTORE.DUMMY)
 	return 0
 
-end ;completeStep</DAT>
+end ;completeStep
+</DAT>
 </OCC>
 </TABLE>
 <TABLE>
@@ -504,6 +542,21 @@ end ;completeStep</DAT>
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\E6,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
+<DAT name="UTIMESTAMP">2017-03-05T22:47:30.00</DAT>
+<DAT name="ULABEL">PROJECT_LANGUAGE</DAT>
+<DAT name="GRP">DUMMY</DAT>
+<DAT name="UBASE">DUMMY</DAT>
+<DAT name="UFORM">SETUP_PROJECT</DAT>
+<DAT name="U_DTYP">S</DAT>
+<DAT name="U_INDB">N</DAT>
+<DAT name="INTERFACEMOD">C3</DAT>
+<DAT name="WIDGETTYPE">EDITBOX</DAT>
+<DAT name="UINHERIT">F</DAT>
+<DAT name="UISOBJID">F</DAT>
+<DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
+<DAT name="WEBWIDGETTYPE">EDITBOX</DAT>
+</OCC>
+<OCC>
 <DAT name="UTIMESTAMP">2014-05-23T11:40:02.00</DAT>
 <DAT name="ULABEL">PROJECT_NAME</DAT>
 <DAT name="GRP">DUMMY</DAT>
@@ -533,6 +586,37 @@ end ;completeStep</DAT>
 <DAT name="WIDGETTYPE">EDITBOX</DAT>
 <DAT name="UINHERIT">F</DAT>
 <DAT name="WIDGETCREATE">ATTACH=RIGHT</DAT>
+<DAT name="UISOBJID">F</DAT>
+<DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
+<DAT name="WEBWIDGETTYPE">EDITBOX</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2017-03-05T22:46:15.00</DAT>
+<DAT name="ULABEL">PROJECT_VARIATION</DAT>
+<DAT name="GRP">DUMMY</DAT>
+<DAT name="UBASE">DUMMY</DAT>
+<DAT name="UFORM">SETUP_PROJECT</DAT>
+<DAT name="U_DTYP">S</DAT>
+<DAT name="U_INDB">N</DAT>
+<DAT name="INTERFACEMOD">C16</DAT>
+<DAT name="WIDGETTYPE">EDITBOX</DAT>
+<DAT name="UINHERIT">F</DAT>
+<DAT name="UISOBJID">F</DAT>
+<DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
+<DAT name="WEBWIDGETTYPE">EDITBOX</DAT>
+</OCC>
+<OCC>
+<DAT name="UTIMESTAMP">2017-02-18T10:06:49.00</DAT>
+<DAT name="ULABEL">PROJECT_VIRTUALSTORE</DAT>
+<DAT name="GRP">DUMMY</DAT>
+<DAT name="UBASE">DUMMY</DAT>
+<DAT name="UFORM">SETUP_PROJECT</DAT>
+<DAT name="U_DTYP">N</DAT>
+<DAT name="U_INDB">N</DAT>
+<DAT name="INTERFACEMOD">I2</DAT>
+<DAT name="WIDGETTYPE">CHECKBOX</DAT>
+<DAT name="UINHERIT">F</DAT>
+<DAT name="INITVALUE">1</DAT>
 <DAT name="UISOBJID">F</DAT>
 <DAT name="HTML_CTRLTYPE">U_INPUT</DAT>
 <DAT name="WEBWIDGETTYPE">EDITBOX</DAT>

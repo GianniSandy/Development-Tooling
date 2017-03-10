@@ -6,7 +6,7 @@
 
 <!-- Java Servlet (WRD) for Uniface Web Application Server -->
 <web-app>
-  <display-name>Uniface Web Request Dispatcher</display-name>
+  <display-name>Uniface Web Request Dispatcher, project: <project_name> </display-name>
 
   <!-- Uniface W(eb) R(equest) D(ispatcher) Servlet -->
   <servlet>
@@ -16,7 +16,6 @@
     <servlet-class>
       com.compuware.uniface.urd.WRDServlet
     </servlet-class>
-
     <init-param>
       <param-name>MAXFILEUPLOADSIZE</param-name>
       <param-value>1000000</param-value>
@@ -33,7 +32,6 @@
       <param-name>MIDDLEWARE</param-name>
       <param-value>UV8:<urouter_machine>+<urouter_port>|<userver_user>|<userver_password>|<project_name></param-value>
     </init-param>
-
     <!-- The settings ERRORDIR, RESOURCEDIR and WEBAPPURL are made optional -->
     <!-- Do not use set them in a stand-alone web application -->
   </servlet>
@@ -41,12 +39,11 @@
   <!-- Uniface W(eb) R(equest) D(ispatcher) Servlet for debugging purposes -->
   <servlet>
     <servlet-name>
-      wrddbg
+      debug
     </servlet-name>
     <servlet-class>
       com.compuware.uniface.urd.WRDServlet
     </servlet-class>
-
     <init-param>
       <param-name>MAXFILEUPLOADSIZE</param-name>
       <param-value>1000000</param-value>
@@ -65,9 +62,8 @@
     </init-param>
     <init-param>
        <param-name>MIDDLEWARE</param-name>
-      <param-value>UV8:<urouter_machine>+<urouter_port>|<userver_user>|<userver_password>|<project_name>_debug</param-value>
+      <param-value>UV8:<urouter_machine>+<urouter_port>|<userver_user>|<userver_password>|<project_name>dbg</param-value>
     </init-param>
-
     <!-- The settings ERRORDIR, RESOURCEDIR and WEBAPPURL are made optional -->
     <!-- Do not use set them in a stand-alone web application -->
   </servlet>
@@ -80,7 +76,6 @@
     <servlet-class>
       com.compuware.uniface.urd.SRDServlet
     </servlet-class>
-
     <init-param>
       <param-name>MIDDLEWARE</param-name>
       <param-value>UV8:<urouter_machine>+<urouter_port>|<userver_user>|<userver_password>|<project_name></param-value>
@@ -98,9 +93,8 @@
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>wrddbg</servlet-name>
+    <servlet-name>debug</servlet-name>
     <url-pattern>/debug/*</url-pattern>
   </servlet-mapping>
 
 </web-app>
-

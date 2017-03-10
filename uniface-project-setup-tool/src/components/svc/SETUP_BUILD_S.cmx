@@ -167,8 +167,8 @@
  pointer="0" inum="0" ufocc="0" varinfo=",1,0,2,\1F\F1,0,0,0,,0,0,0,," />
 </DSC>
 <OCC>
-<DAT name="UTIMESTAMP">2016-02-19T14:07:30.00</DAT>
-<DAT name="UCOMPSTAMP">2016-02-19T14:07:30.00</DAT>
+<DAT name="UTIMESTAMP">2017-02-16T10:48:56.00</DAT>
+<DAT name="UCOMPSTAMP">2017-02-06T21:00:10.00</DAT>
 <DAT name="ULABEL">SETUP_BUILD_S</DAT>
 <DAT name="UDESCR" xml:space='preserve'>Build Service</DAT>
 <DAT name="WVPOS">0</DAT>
@@ -287,7 +287,8 @@ filecopy ".\project-templates\web-project\web\WEB-INF\templates\web.xml.template
 
 ;TODO: Automatically create zip of everything we just created in the build folder
 
-return 0</DAT>
+return 0
+</DAT>
 <DAT name="GENERAL" xml:space='preserve'>;---------------------------------------
 entry lpConcatPaths
 ;---------------------------------------

@@ -1,14 +1,51 @@
 [DRIVER_SETTINGS]
 SLE     U1.0
-USYS$SLE_PARAMS create db = on
+USYS$SLE_PARAMS create db = on, identifiers = quoted
+; PGS	U1.0
+; USYS$PGS_PARAMS connection pooling = off, identifiers = quoted, entity names = upper, logon timeout = 5, blobs = on, maxlockwait = 10
+; ORA	U7.0
+; USYS$ORA_PARAMS dhfr, dpa, oc 200
+; MSS	U5.0
+; USYS$MSS_PARAMS 
+; TXT	U1.0
+; USYS$TXT_PARAMS	bom=no
+; SOP	U2.0
+; USYS$SOP_PARAMS callback = SOAP_GEN_CALLBCK
+; LDP	U2.0
+; USYS$LDP_PARAMS addbase=on, nulldefault:N, identifiercase:upper, stepsize:100
+; TCP	U1.0
+; USYS$TCP_PARAMS ka
 
 [PATHS]
-; Path to the SQLite database for the Uniface Repository:
-$DBMS        SLE:.\dbms\source_repo.db
-; Path to the SQLite database for application data:
-$DBMS_DEF    SLE:.\dbms\app_data.db
+; Path to the SQLite database for Uniface Repository and User data:
+$DBMS        SLE:.\dbs\uniface_repo.db
+$DBMS_DEF    SLE:.\dbs\uniface_data.db
+
+; Path to PostgreSQL database for Uniface Repository and User data:
+; $DBMS		PGS:PostgreSQL35W-UR|uniface_repo|uniface_repo
+; $DBMS_DEF	PGS:PostgreSQL35W-UD|uniface_data|uniface_data
+
+; Path to Microsoft SQLserver database for Uniface Repository and User data:
+; $DBMS		ORA:MSSQL-UR|uniface_repo|uniface_repo
+; $DBMS_DEF	ORA:MSSQL-UD|uniface_data|uniface_data
+
+; Path to Oracle database for Uniface Repository and User data:
+; $DBMS		ORA:XA|uniface_repo|uniface_repo
+; $DBMS_DEF	ORA:XA|uniface_data|uniface_data
+
+; Path to LDAP database with searchbase definition
+; $LDP		LDP:www.serverdiaccesso.com+389:o=searchbase.com|user|pass
 
 $SYS    $DBMS
 $UUU    $DBMS
 $IDF    $DBMS
 $DEF    $DBMS_DEF
+
+; $MSS	$DEF
+; $ORA	$DEF
+; $PGS	$DEF
+; $SLE	$DEF
+
+; $TCP		TCP:localhost+13002|userver|userverpass|remoteust
+; $TCPDEB	TCP:localhost+13002|userver|userverpass|remoteustdbg
+; $SRU	$TCP
