@@ -31,7 +31,7 @@ Information about the developer's local environment is detected from the Uniface
  * The tool can now be used by opening a command prompt in the root of the Uniface project you wish to setup and typing "projectsetup"
 
 WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, ProjectSetup97.bat as startup batch file and ProjectSetup97 as base dir into UnifacePackages folder.
-         Extension developed from Gianni Sandigliano on 2017.03.10 is based on this 9.7 environment.
+         Extensions developed from Gianni Sandigliano committed on 2017.03.10 are based on this 9.7 environment.
 
 ## Usage ##
 
@@ -91,27 +91,27 @@ WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, Pr
 
 ## Contributions to the project ##
 
-Gianni Sandigliano 2017.02.05
- Modified PROJECTSETUP.BAT script: Added syntax definition.
- Modified PROJECTSETUP.BAT script: Added checks to switch to another disk when needed.
- Modified PROJECTSETUP.BAT script: Added parameters check.
-Gianni Sandigliano 2017-02-10
- Modified PROJECTSETUP.BAT script: Added parameters normalization.
- Modified source SETUP_MAIN_S to fully support variables substitution into original and destination filenames.
-Gianni Sandigliano 2017-02-15
- Modified source SETUP_STEP2_S to support origins directories with spaces into names (Example: C:\Program Files (x86)\BlaBlaBla).
- Modified source SETUP_MAIN_S to interactively go back to select project template.
-Gianni Sandigliano 2017-02-20
- Modified source SETUP_MAIN_S to support copying a whole directory tree.
- Modified source SETUP_PROJECT to ask for $variation and $language as project parameters.
-Gianni Sandigliano 2017-02-28
- Modified source SETUP_MAIN_S to support project template name and type in XML project config file.
- Modified source SETUP_MAIN_S added 3 standard checks to project templates (web-templates usage, file saved into local virtualStore, security warning on project base directory).
-Gianni Sandigliano 2017-03-09
- Modified source SETUP_MAIN_S and SETUP_STEP2_S to save project.setup.log.
- Modified source SETUP_STEP2_S to support (SQL) script execution on 3 paths: $IDF, $SYS, $DEF.
- Modified source SETUP_STEP2_S to support data import on 3 paths: $IDF, $SYS, $DEF.
-Gianni Sandigliano 2017-03-10 Everything works...Committed!
+ * Gianni Sandigliano 2017.02.05
+   * Modified PROJECTSETUP.BAT script: Added syntax definition.
+   * Modified PROJECTSETUP.BAT script: Added checks to switch to another disk when needed.
+   * Modified PROJECTSETUP.BAT script: Added parameters check.
+ * Gianni Sandigliano 2017-02-10
+   * Modified PROJECTSETUP.BAT script: Added parameters normalization.
+   * Modified source SETUP_MAIN_S to fully support variables substitution into original and destination filenames.
+ * Gianni Sandigliano 2017-02-15
+   * Modified source SETUP_STEP2_S to support origins directories with spaces into names (Example: C:\Program Files (x86)\BlaBlaBla).
+   * Modified source SETUP_MAIN_S to interactively go back to select project template.
+ * Gianni Sandigliano 2017-02-20
+   * Modified source SETUP_MAIN_S to support copying a whole directory tree.
+   * Modified source SETUP_PROJECT to ask for $variation and $language as project parameters.
+ * Gianni Sandigliano 2017-02-28
+   * Modified source SETUP_MAIN_S to support project template name and type in XML project config file.
+   * Modified source SETUP_MAIN_S added 3 standard checks to project templates (web-templates usage, file saved into local virtualStore, security warning on project base directory).
+ * Gianni Sandigliano 2017-03-09
+   * Modified source SETUP_MAIN_S and SETUP_STEP2_S to save project.setup.log.
+   * Modified source SETUP_STEP2_S to support (SQL) script execution on 3 paths: $IDF, $SYS, $DEF.
+   * Modified source SETUP_STEP2_S to support data import on 3 paths: $IDF, $SYS, $DEF.
+ * Gianni Sandigliano 2017-03-10 Everything works...Committed!
 
 
 ## Contributors ##
