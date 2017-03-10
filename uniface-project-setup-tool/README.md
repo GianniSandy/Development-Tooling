@@ -97,6 +97,7 @@ WARNING! For Uniface 9.7 is available an extension using USYS97 env variable, Pr
    * Modified PROJECTSETUP.BAT script: Added parameters check.
  * Gianni Sandigliano 2017-02-10
    * Modified PROJECTSETUP.BAT script: Added parameters normalization.
+   * Modified source SETUP_MAIN_S to moved directories creation as first step to fully implement an adm directory
    * Modified source SETUP_MAIN_S to fully support variables substitution into original and destination filenames.
  * Gianni Sandigliano 2017-02-15
    * Modified source SETUP_STEP2_S to support origins directories with spaces into names (Example: C:\Program Files (x86)\BlaBlaBla).
